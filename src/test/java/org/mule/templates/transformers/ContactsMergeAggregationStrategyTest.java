@@ -13,6 +13,7 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -20,6 +21,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mule.api.MuleContext;
 import org.mule.api.MuleEvent;
 import org.mule.api.routing.AggregationContext;
+import org.mule.tck.junit4.rule.DynamicPort;
 import org.mule.templates.integration.AbstractTemplateTestCase;
 
 import com.google.common.collect.Lists;
@@ -30,7 +32,9 @@ public class ContactsMergeAggregationStrategyTest extends AbstractTemplateTestCa
 	
 	@Mock
 	private MuleContext muleContext;
-  
+
+	@Rule
+	public DynamicPort port = new DynamicPort("http.port");
 	
 	@Test
 	public void testAggregate() throws Exception {

@@ -13,6 +13,8 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -23,6 +25,8 @@ import org.mule.api.transformer.TransformerException;
 @SuppressWarnings("deprecation")
 @RunWith(MockitoJUnitRunner.class)
 public class ContactsMergeTest {
+
+	private static final Logger LOGGER = LogManager.getLogger(ContactsMergeTest.class);
 	
 	@Mock
 	private MuleContext muleContext;
@@ -35,7 +39,7 @@ public class ContactsMergeTest {
 		ContactMerger sfdcContactMerge = new ContactMerger();
 		List<Map<String, String>> mergedList = sfdcContactMerge.mergeList(contactsA, contactsB);
 
-		System.out.println(mergedList);
+		LOGGER.info(mergedList);
 		Assert.assertEquals("The merged list obtained is not as expected", createExpectedList(), mergedList);
 
 	}
@@ -50,7 +54,7 @@ public class ContactsMergeTest {
 		ContactMerger sfdcContactMerge = new ContactMerger();
 		List<Map<String, String>> mergedList = sfdcContactMerge.mergeList(contactsA, contactsB);
 
-		System.out.println(mergedList);
+		LOGGER.info(mergedList);
 
 		List<Map<String, String>> expectedList = createExpectedList();
 		expectedList.get(0).put("Email", null);

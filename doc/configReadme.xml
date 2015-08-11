@@ -129,7 +129,7 @@ Criteria and format applied:
 All records ordered alphabetically by mail within each category.
 If you want to change this order then the *compare* method should be modified in class [SortContactList.java] (../blob/master/src/main/java/SortContactList.java).
 
-+ CSV Report [DataMapper](http://www.mulesoft.org/documentation/display/current/Datamapper+User+Guide+and+Reference) transforming the List of Maps in CSV with headers **NameInMsDynamics**, **NameInSalesforce**, **Email**, **IDInMsDynamics** and **IDInSalesforce**.
++ CSV Report [DataWeave](http://blogs.mulesoft.com/intro-dataweave/) transforming the List of Maps in CSV with headers **NameInMsDynamics**, **NameInSalesforce**, **Email**, **IDInMsDynamics** and **IDInSalesforce**.
 + An [Object to string transformer](http://www.mulesoft.org/documentation/display/current/Transformers) is used to set the payload as an String. 
 ]]>
 		</section>
