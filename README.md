@@ -1,13 +1,7 @@
 
 # Anypoint Template: MS Dynamics and Salesforce Contact Aggregation
 
-### License Agreement
-
-This template is available free of charge when used with Mule Runtime Enterprise Edition, CloudHub, or with a trial of Anypoint Studio.
-
-### Use Case 
-
-As an admin I want to aggregate contacts from Salesforce and MS Dynamics instances and compare them to see which contacts can only be found in one of the two and which contacts are in both instances. 
+Use Case: As an admin I want to aggregate contacts from Salesforce and MS Dynamics instances and compare them to see which contacts can only be found in one of the two and which contacts are in both instances. 
 
 This template:
 
@@ -19,17 +13,13 @@ This template:
 
 To make this Anypoint Template run, be aware of your own Salesforce field configuration:
 
- - How can I check that the field configuration for my Salesforce instance is the right one?
+- Where can I check that the field configuration for my Salesforce instance is the right one?
 
-    [Salesforce: Checking Field Accessibility for a Particular Field][1]
+    <a href="https://help.salesforce.com/HTViewHelpDoc?id=checking_field_accessibility_for_a_particular_field.htm&language=en_US">Salesforce: Checking Field Accessibility for a Particular Field</a>
 
 - Can I modify the Field Access Settings? How?
 
-    [Salesforce: Modifying Field Access Settings][2]
-
-
-[1]: https://help.salesforce.com/HTViewHelpDoc?id=checking_field_accessibility_for_a_particular_field.htm&language=en_US
-[2]: https://help.salesforce.com/HTViewHelpDoc?id=modifying_field_access_settings.htm&language=en_US
+    <a href="https://help.salesforce.com/HTViewHelpDoc?id=modifying_field_access_settings.htm&language=en_US">Salesforce: Modifying Field Access Settings</a>
 
 ### As a Source of Data
 
@@ -49,44 +39,34 @@ column='486'
 ]
 ```
 
-### Run it!
-
-Simple steps to get MS Dynamics and Salesforce Contact Aggregation running.
-
-
-## Running On Premises
+## Run It!
 
 Browse to the local HTTP endpoint with the port you configured in your common.properties file. For example for port `9090`, browse to `http://localhost:9090/generatereport` and this creates a CSV report and sends it to the mail set.
 
-### Importing an Anypoint Template into Studio
+### Importing the Template into Studio
 
-Anypoint Studio offers several ways to import a project into the workspace, for instance: 
-
-+ Anypoint Studio Project from the file system
-+ Packaged Mule application (.jar)
-
+In Studio, click the Exchange X icon in the upper left of the taskbar, log into your
+Anypoint Platform credentials, search for the template, and click **Open**.
 
 ### Running on Studio
 
-After you import this template into Anypoint Studio, follow these steps to run it:
+After opening your template in Anypoint Studio, follow these steps to run it:
 
-+ Locate the properties file `mule.dev.properties`, in src/main/resources.
-+ Complete all the properties required as per the examples in the section.
-+ Once that is done, right click your template project folder.
-+ Hover your mouse over `"Run as"`
-+ Click  `"Mule Application (configure)"`
-+ Inside the dialog, select Environment and set the variable `"mule.env"` to the value `"dev"`
-+ Click `"Run"`
-
++ Locate the properties file `mule.dev.properties`, in src/main/resources
++ Complete all the properties required as per the examples in the section "Properties to be configured".
++ Once that is done, right click your template project folder .
++ Hover your mouse over `Run as`.
++ Click `Mule Application (configure)`.
++ Inside the dialog, select Environment and set the variable `mule.env` to the value `dev`.
++ Click `Run`.
 
 ### Running on Mule Runtime Standalone
 
 Complete all properties in one of the property files, for example in mule.prod.properties and run your app with the corresponding environment variable to use it. To follow the example, this is `mule.env=prod`. 
 
-
 ## Running on CloudHub
 
-While creating your application on CloudHub (or you can do it later as a next step), you need to go to Deployment > Advanced to set all environment variables detailed in **Properties to be configured** as well as the **mule.env**.
+When creating your application in CloudHub, you need to go to Deployment > Advanced to set environment variables detailed in "Properties to be configured" as well as the **mule.env**.
 After your app is all set and started, if you choose the `msdynandsfdccontactaggregation` as the domain name, to trigger the use case you need to access `http://msdynandsfdccontactaggregation.cloudhub.io/generatereport` to cause the report to be sent to the email addresses you configured.
 
 ### Deploying Your Template on CloudHub
@@ -167,15 +147,17 @@ The are transformed to CSV format. The final report in CSV format is sent to ema
 
 This is the file with the endpoint to start the aggregation. This template has an HTTP Inbound Endpoint as the way to trigger the use case.
 
-## errorHandling.xml
-
-This is the right place to handle how your integration will react depending on the different exceptions. 
-This file holds a [Error Handling](http://www.mulesoft.org/documentation/display/current/Error+Handling) that is referenced by the main flow in the business logic.
-
 ### Trigger Flow
 
 **HTTP Inbound Endpoint** - Start Report Generation
 + `${http.port}` is set as a property to be defined either on a property file or in CloudHub environment variables.
 + The path configured by default is `generatereport` and you are free to change for the one you prefer.
 + The host name for all endpoints in your CloudHub configuration should be defined as `localhost`. CloudHub then routes requests from your application domain URL to the endpoint.
+
+## errorHandling.xml
+
+This is the right place to handle how your integration will react depending on the different exceptions. 
+This file holds a [Error Handling](http://www.mulesoft.org/documentation/display/current/Error+Handling) that is referenced by the main flow in the business logic.
+
+
 
