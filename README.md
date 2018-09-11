@@ -1,7 +1,17 @@
 
 # Anypoint Template: MS Dynamics and Salesforce Contact Aggregation
 
-Use Case: As an admin I want to aggregate contacts from Salesforce and MS Dynamics instances and compare them to see which contacts can only be found in one of the two and which contacts are in both instances. 
+Aggregates contacts from Salesforce and Microsoft Dynamics into a CSV file. This basic pattern can be modified to collect from more or different sources and to produce formats other than CSV. This integration application is triggered by an HTTP call, which can be done either manually or programmatically. Contacts are sorted such that the contacts only in Salesforce appear first, followed by contacts only in Microsoft Dynamics and lastly by contacts found in both systems. The custom sort or merge logic can be easily modified to present the data as needed. This template also serves as a base for building APIs using the Anypoint Platform.
+
+![d731d9a5-62fd-4adf-9eae-cc099580fb7c-image.png](https://exchange2-file-upload-service-kprod.s3.us-east-1.amazonaws.com:443/d731d9a5-62fd-4adf-9eae-cc099580fb7c-image.png)
+
+### License Agreement
+
+Using this template is subject to the conditions of this <a href="https://github.com/mulesoft/template-sfdc2msdyn-contact-aggregation/blob/4.1/AnypointTemplateLicense.pdf>License Agreement</a>. Review the terms of the license before downloading and using this template. In short, you are allowed to use the template for free with Mule Enterprise Edition, CloudHub, or as a trial in Anypoint Studio.
+
+### Use Case
+
+As an admin I want to aggregate contacts from Salesforce and MS Dynamics instances and compare them to see which contacts can only be found in one of the two and which contacts are in both instances. 
 
 This template:
 
@@ -13,13 +23,9 @@ This template:
 
 To make this Anypoint Template run, be aware of your own Salesforce field configuration:
 
-- Where can I check that the field configuration for my Salesforce instance is the right one?
+- Where can I check that the field configuration for my Salesforce instance is the right one? See: <a href="https://help.salesforce.com/HTViewHelpDoc?id=checking_field_accessibility_for_a_particular_field.htm&language=en_US">Salesforce: Checking Field Accessibility for a Particular Field</a>
 
-    <a href="https://help.salesforce.com/HTViewHelpDoc?id=checking_field_accessibility_for_a_particular_field.htm&language=en_US">Salesforce: Checking Field Accessibility for a Particular Field</a>
-
-- Can I modify the Field Access Settings? How?
-
-    <a href="https://help.salesforce.com/HTViewHelpDoc?id=modifying_field_access_settings.htm&language=en_US">Salesforce: Modifying Field Access Settings</a>
+- Can I modify the Field Access Settings? How? See: <a href="https://help.salesforce.com/HTViewHelpDoc?id=modifying_field_access_settings.htm&language=en_US">Salesforce: Modifying Field Access Settings</a>
 
 ### As a Source of Data
 
