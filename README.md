@@ -7,7 +7,7 @@ Aggregates contacts from Salesforce and Microsoft Dynamics into a CSV file. This
 
 ### License Agreement
 
-Using this template is subject to the conditions of this <a href="https://github.com/mulesoft/template-sfdc2msdyn-contact-aggregation/blob/4.1/AnypointTemplateLicense.pdf>License Agreement</a>. Review the terms of the license before downloading and using this template. In short, you are allowed to use the template for free with Mule Enterprise Edition, CloudHub, or as a trial in Anypoint Studio.
+Using this template is subject to the conditions of this <a href="https://github.com/mulesoft/template-sfdc2msdyn-contact-aggregation/blob/4.1/AnypointTemplateLicense.pdf">License Agreement</a>. Review the terms of the license before downloading and using this template. In short, you are allowed to use the template for free with Mule Enterprise Edition, CloudHub, or as a trial in Anypoint Studio.
 
 ### Use Case
 
