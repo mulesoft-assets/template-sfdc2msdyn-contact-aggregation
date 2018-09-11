@@ -9,7 +9,7 @@
 + [Run it!](#runit)
 	* [Running on premise](#runonopremise)
 	* [Running on Studio](#runonstudio)
-	* [Running on Mule ESB stand alone](#runonmuleesbstandalone)
+	* [Running on Mule runtime standalone](#runonmuleesbstandalone)
 	* [Running on CloudHub](#runoncloudhub)
 	* [Deploying your Anypoint Template on CloudHub](#deployingyouranypointtemplateoncloudhub)
 	* [Properties to be configured (With examples)](#propertiestobeconfigured)
@@ -23,20 +23,20 @@
 
 # License Agreement <a name="licenseagreement"/>
 Note that using this template is subject to the conditions of this [License Agreement](AnypointTemplateLicense.pdf).
-Please review the terms of the license before downloading and using this template. In short, you are allowed to use the template for free with Mule ESB Enterprise Edition, CloudHub, or as a trial in Anypoint Studio.
+Please review the terms of the license before downloading and using this template. In short, you are allowed to use the template for free with CloudHub or as a trial in Anypoint Studio.
 
 # Use Case <a name="usecase"/>
 As an admin I want to aggregate contacts from Salesforce and MS Dynamics instances and compare them to see which contacts can only be found in one of the two and which contacts are in both instances. 
 
-For practical purposes this Template will generate the result in the format of a CSV Report sent by mail.
+This template generates its result as a CSV report, which is sent by email.
 
 This Template should serve as a foundation for extracting data from two systems, aggregating data, comparing values of fields for the objects, and generating a report on the differences. 
 
-As implemented, it gets contacts from Salesforce and MS Dynamics, compares by the email address of the contacts, and generates a CSV file which shows contact name in Salesforce, contact name in MS Dynamics, Email and contacts IDs in Salesforce and MS Dynamics. The report is sent by the email to a configured group of email addresses.
+As implemented, it gets contacts from Salesforce and MS Dynamics, compares the email address of the contacts, and generates a CSV file which shows contact name in Salesforce, contact name in MS Dynamics, Email and contacts IDs in Salesforce and MS Dynamics. The report is sent by email to a configured group of email addresses.
 
 # Considerations <a name="considerations"/>
 
-To make this Anypoint Template run, there are certain preconditions that must be considered. All of them deal with the preparations in both, that must be made in order for all to run smoothly. **Failing to do so could lead to unexpected behavior of the template.**
+You need to meet the preconditions in Salesforce and MS Dynamics for this template to run smoothly. **Failing to do so could lead to unexpected behavior of the template.**
 
 
 
@@ -60,9 +60,9 @@ In order to have this template working as expected, you should be aware of your 
 [1]: https://help.salesforce.com/HTViewHelpDoc?id=checking_field_accessibility_for_a_particular_field.htm&language=en_US
 [2]: https://help.salesforce.com/HTViewHelpDoc?id=modifying_field_access_settings.htm&language=en_US
 
-### As source of data
+### As Source of data
 
-If the user configured in the template for the source system does not have at least *read only* permissions for the fields that are fetched, then a *InvalidFieldFault* API fault will show up.
+If the user configured in the template for the source system does not have at least *read only* permissions for the fields that are fetched, then you will get an *InvalidFieldFault* API fault.
 
 ```
 java.lang.RuntimeException: [InvalidFieldFault [ApiQueryFault [ApiFault  exceptionCode='INVALID_FIELD'
@@ -87,7 +87,7 @@ column='486'
 ## Microsoft Dynamics CRM Considerations <a name="msdynamicsconsiderations"/>
 
 
-### As destination of data
+### As Destination of Data
 
 There are no particular considerations for this Anypoint Template regarding Microsoft Dynamics CRM as data destination.
 
@@ -97,24 +97,24 @@ There are no particular considerations for this Anypoint Template regarding Micr
 Simple steps to get MS Dynamics and Salesforce Contact Aggregation running.
 
 
-## Running on premise <a name="runonopremise"/>
-After this, to trigger the use case you just need to hit the local HTTP endpoint with the port you configured in [common.properties](../blob/master/src/main/resources/common.properties). If this is, for instance, `9090` then you should hit: `http://localhost:9090/generatereport` and this will create a CSV report and send it to the mails set.
+## Running the Connector On Premises <a name="runonopremise"/>
+To trigger the use case, browse to the URL of the host and port you configured in common.properties. For example, if you configure the host as localhost and the port as 9090, browse to `http://localhost:9090/generatereport` to create a CSV report and send it by email.
 
 
-### Where to Download Mule Studio and Mule ESB
+### Where to Download Anypoint Studio 
 First thing to know if you are a newcomer to Mule is where to get the tools.
 
-+ You can download Mule Studio from this [Location](http://www.mulesoft.com/platform/mule-studio)
-+ You can download Mule ESB from this [Location](http://www.mulesoft.com/platform/soa/mule-esb-open-source-esb)
++ You can download Anypoint Studio from this [Location](https://www.mulesoft.com/platform/studio)
++ You can download Mule runtime from this [Location](https://docs.mulesoft.com/mule4-user-guide/v/4.1/runtime-installation-task)
 
 
 ### Importing an Anypoint Template into Studio
-Mule Studio offers several ways to import a project into the workspace, for instance: 
+Anypoint Studio offers several ways to import a project into the workspace, for instance: 
 
 + Anypoint Studio Project from File System
 + Packaged mule application (.jar)
 
-You can find a detailed description on how to do so in this [Documentation Page](http://www.mulesoft.org/documentation/display/current/Importing+and+Exporting+in+Studio).
+For more information, see [Importing and Exporting Projects](https://docs.mulesoft.com/anypoint-studio/v/7.2/import-export-packages).
 
 
 ### Running on Studio <a name="runonstudio"/>
@@ -129,21 +129,22 @@ Once you have imported you Anypoint Template into Anypoint Studio you need to fo
 + Click `"Run"`
 
 
-### Running on Mule ESB stand alone <a name="runonmuleesbstandalone"/>
+### Running on Mule Runtime Standalone <a name="runonmuleesbstandalone"/>
 Complete all properties in one of the property files, for example in [mule.prod.properties] (../master/src/main/resources/mule.prod.properties) and run your app with the corresponding environment variable to use it. To follow the example, this will be `mule.env=prod`. 
 
 
 ## Running on CloudHub <a name="runoncloudhub"/>
-While [creating your application on CloudHub](http://www.mulesoft.org/documentation/display/current/Hello+World+on+CloudHub) (Or you can do it later as a next step), you need to go to Deployment > Advanced to set all environment variables detailed in **Properties to be configured** as well as the **mule.env**.
-Once your app is all set and started, supposing you choose as domain name `msdynandsfdccontactaggregation` to trigger the use case you just need to hit `http://msdynandsfdccontactaggregation.cloudhub.io/generatereport` and the report will be sent to the emails configured.
+While [creating your application on CloudHub](https://docs.mulesoft.com/anypoint-studio/v/7.1/deploy-mule-application-task) (or you can do it later as a next step). Go to Deployment > Advanced to set all environment variables detailed in **Properties to be configured** as well as the **mule.env**.
+After you configure and start your app, you can choose `msdynandsfdccontactaggregation` as domain name. Go to `http://msdynandsfdccontactaggregation.cloudhub.io/generatereport` to trigger the use case and send the report to the emails configured.
 
 ### Deploying your Anypoint Template on CloudHub <a name="deployingyouranypointtemplateoncloudhub"/>
-Mule Studio provides you with really easy way to deploy your Template directly to CloudHub, for the specific steps to do so please check this [link](http://www.mulesoft.org/documentation/display/current/Deploying+Mule+Applications#DeployingMuleApplications-DeploytoCloudHub)
+Anypoint Studio lets you deploy your template directly to CloudHub. See [To Deploy a Mule Application to CloudHub - Anypoint Studio](https://docs.mulesoft.com/anypoint-studio/v/7.1/deploy-mule-application-task).
 
 
-## Properties to be configured (With examples) <a name="propertiestobeconfigured"/>
-In order to use this Mule Anypoint Template you need to configure properties (Credentials, configurations, etc.) either in properties file or in CloudHub as Environment Variables. Detail list with examples:
-### Application configuration
+## Properties to be Configured (With Examples) <a name="propertiestobeconfigured"/>
+To use this template, configure the credentials and configuration information in a properties file or in CloudHub as environment variables. 
+
+### Application Configuration
 **HTTP Connector configuration**   
 + http.port `9090` 
 
@@ -158,13 +159,13 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + msdyn.url `https://yourorg.api.crm4.dynamics.com/XRMServices/2011/Organization.svc`
 + msdyn.retries `2`
 
-**SMTP Services configuration**
+**SMTP Services Configuration**
 + smtp.host `smtp.gmail.com`
 + smtp.port `587`
 + smtp.user `exampleuser@gmail.com`
 + smtp.password `ExamplePassword456`
 
-**Mail details**
+**Mail Details**
 + mail.from `exampleuser1@gmail.com`
 + mail.to `exampleuser2@gmail.com`
 + mail.subject `SFDC Contacts Report`
@@ -177,9 +178,7 @@ Salesforce imposes limits on the number of API Calls that can be made. However, 
 
 # Customize It!<a name="customizeit"/>
 This brief guide intends to give a high level idea of how this Anypoint Template is built and how you can change it according to your needs.
-As mule applications are based on XML files, this page will be organized by describing all the XML that conform the Anypoint Template.
-Of course more files will be found such as Test Classes and [Mule Application Files](http://www.mulesoft.org/documentation/display/current/Application+Format), but to keep it simple we will focus on the XMLs.
-
+More files are available such as test cases and Mule application files. To keep the template simple, we focus on the XML.
 Here is a list of the main XML files you'll find in this application:
 
 * [config.xml](#configxml)
@@ -189,7 +188,7 @@ Here is a list of the main XML files you'll find in this application:
 
 
 ## config.xml<a name="configxml"/>
-Configuration for Connectors and [Configuration Properties](http://www.mulesoft.org/documentation/display/current/Configuring+Properties) are set in this file. **Even you can change the configuration here, all parameters that can be modified here are in properties file, and this is the recommended place to do it so.** Of course if you want to do core changes to the logic you will probably need to modify this file.
+Configuration for Connectors and [Configuration Properties](https://docs.mulesoft.com/mule4-user-guide/v/4.1/configuring-properties) are set in this file. **You can change the configuration here. All parameters that can be modified here are in properties file. This is the recommended place to make changes.**You can make core changes to the logic by modifying this file.
 
 In the visual editor they can be found on the *Global Element* tab.
 
@@ -209,7 +208,7 @@ and transformed to CSV format. Final report in CSV format is sent to email, that
 
 
 ## endpoints.xml<a name="endpointsxml"/>
-This is the file where you will found the endpoint to start the aggregation. This Template has an HTTP Inbound Endpoint as the way to trigger the use case.
+This is the file where you will find the endpoint to start the aggregation. This Template has an HTTP Inbound Endpoint as the way to trigger the use case.
 
 ### Trigger Flow
 **HTTP Inbound Endpoint** - Start Report Generation
@@ -221,7 +220,7 @@ This is the file where you will found the endpoint to start the aggregation. Thi
 
 ## errorHandling.xml<a name="errorhandlingxml"/>
 This is the right place to handle how your integration will react depending on the different exceptions. 
-This file holds a [Error Handling](http://www.mulesoft.org/documentation/display/current/Error+Handling) that is referenced by the main flow in the business logic.
+This file holds an [Error Handler](https://docs.mulesoft.com/mule4-user-guide/v/4.1/intro-error-handlers) that is referenced by the main flow in the business logic.
 
 
 
