@@ -1,5 +1,7 @@
 
-# Anypoint Template: MS Dynamics and Salesforce Contact Aggregation
+# Anypoint Template: Salesforce and Microsoft Dynamics CRM Contact Aggregation
+
+![](https://exchange2-file-upload-service-kprod.s3.us-east-1.amazonaws.com:443/d731d9a5-62fd-4adf-9eae-cc099580fb7c-image.png)
 
 # License Agreement
 This template is subject to the conditions of the 
@@ -10,23 +12,19 @@ with the Mule Enterprise Edition, CloudHub, or as a trial in Anypoint Studio.
 # Use Case
 As an admin I want to aggregate contacts from Salesforce and MS Dynamics instances and compare them to see which contacts can only be found in one of the two and which contacts are in both instances. 
 
-For practical purposes this Template will generate the result in the format of a CSV Report sent by mail.
+This template generates its result as a CSV report that is sent by email.
 
-This Template should serve as a foundation for extracting data from two systems, aggregating data, comparing values of fields for the objects, and generating a report on the differences. 
+This template serves as a foundation for extracting data from two systems, aggregating data, comparing values of fields for the objects, and generating a report on the differences. 
 
-As implemented, it gets contacts from Salesforce and MS Dynamics, compares by the email address of the contacts, and generates a CSV file which shows contact name in Salesforce, contact name in MS Dynamics, Email and contacts IDs in Salesforce and MS Dynamics. The report is sent by the email to a configured group of email addresses.
+As implemented, it gets contacts from Salesforce and Microsoft Dynamics, compares by the email address of the contacts, and generates a CSV file that shows contact names in Salesforce, contact names in MS Dynamics, and the email and contacts IDs in Salesforce and MS Dynamics. The report is sent by the email to a configured group of email addresses.
 
 # Considerations
 
-To make this Anypoint Template run, there are certain preconditions that must be considered. All of them deal with the preparations in both, that must be made in order for all to run smoothly. **Failing to do so could lead to unexpected behavior of the template.**
-
-
+To make this template run, there are certain preconditions that must be considered. All of them deal with the preparations in both, that must be made for the template to run smoothly. Failing to do so could lead to unexpected behavior of the template.
 
 ## Salesforce Considerations
 
-Here's what you need to know about Salesforce to get this template to work.
-
-### FAQ
+Here's what you need to know about Salesforce to get this template to work:
 
 - Where can I check that the field configuration for my Salesforce instance is the right one? See: <a href="https://help.salesforce.com/HTViewHelpDoc?id=checking_field_accessibility_for_a_particular_field.htm&language=en_US">Salesforce: Checking Field Accessibility for a Particular Field</a>
 - Can I modify the Field Access Settings? How? See: <a href="https://help.salesforce.com/HTViewHelpDoc?id=modifying_field_access_settings.htm&language=en_US">Salesforce: Modifying Field Access Settings</a>
@@ -36,24 +34,21 @@ Here's what you need to know about Salesforce to get this template to work.
 If the user who configured the template for the source system does not have at least *read only* permissions for the fields that are fetched, then an *InvalidFieldFault* API fault displays.
 
 ```
-java.lang.RuntimeException: [InvalidFieldFault [ApiQueryFault [ApiFault  exceptionCode='INVALID_FIELD'
+java.lang.RuntimeException: [InvalidFieldFault [ApiQueryFault 
+[ApiFault  exceptionCode='INVALID_FIELD'
 exceptionMessage='
 Account.Phone, Account.Rating, Account.RecordTypeId, Account.ShippingCity
 ^
 ERROR at Row:1:Column:486
-No such column 'RecordTypeId' on entity 'Account'. If you are attempting to use a custom field, be sure to append the '__c' after the custom field name. Reference your WSDL or the describe call for the appropriate names.'
+No such column 'RecordTypeId' on entity 'Account'. If you are attempting to use a 
+custom field, be sure to append the '__c' after the custom field name. Reference your 
+WSDL or the describe call for the appropriate names.'
 ]
 row='1'
 column='486'
 ]
 ]
 ```
-
-
-
-
-
-
 
 ## Microsoft Dynamics CRM Considerations
 
@@ -69,7 +64,7 @@ Simple steps to get MS Dynamics and Salesforce Contact Aggregation running.
 
 
 ## Running On Premises
-After this, to trigger the use case you just need to hit the local HTTP endpoint with the port you configured in [common.properties](../blob/master/src/main/resources/common.properties). If this is, for instance, `9090` then you should hit: `http://localhost:9090/generatereport` and this will create a CSV report and send it to the mails set.
+After this, to trigger the use case you just need to hit the local HTTP endpoint with the port you configured in the src/main/resources/common.properties file. If this is, for instance, `9090` then browse to `http://localhost:9090/generatereport` which creates a CSV report and sends it to the mails set.
 
 
 ### Where to Download Anypoint Studio and the Mule Runtime
@@ -102,15 +97,13 @@ Complete all properties in one of the property files, for example in mule.prod.p
 
 ## Running on CloudHub
 While creating your application on CloudHub (or you can do it later as a next step), go to Runtime Manager > Manage Application > Properties to set the environment variables listed in "Properties to Configure" as well as the **mule.env**.
-Once your app is all set and started, supposing you choose as domain name `msdynandsfdccontactaggregation` to trigger the use case you just need to hit `http://msdynandsfdccontactaggregation.cloudhub.io/generatereport` and the report will be sent to the emails configured.
-
-### Deploying your Anypoint Template on CloudHub
-Studio provides an easy way to deploy your template directly to CloudHub, for the specific steps to do so check this
-
+Once your app is all set and started, supposing you choose as domain name `msdynandsfdccontactaggregation` to trigger the use case you just need to hit `http://msdynandsfdccontactaggregation.cloudhub.io/generatereport` and the report is sent to the emails configured.
 
 ## Properties to Configure
 To use this template, configure properties (credentials, configurations, etc.) in the properties file or in CloudHub from Runtime Manager > Manage Application > Properties. The sections that follow list example values.
+
 ### Application Configuration
+
 **HTTP Connector configuration**   
 + http.port `9090` 
 
@@ -161,34 +154,29 @@ In the Studio visual editor, the properties are on the *Global Element* tab.
 
 
 ## businessLogic.xml
-Functional aspect of the Template is implemented on this XML, directed by one flow responsible of conducting the aggregation of data, comparing records and finally formatting the output, in this case being a report.
+Functional aspect of the template is implemented on this XML, directed by one flow responsible of conducting the aggregation of data, comparing records and finally formatting the output, in this case being a report.
         
-Using Scatter-Gather component we are querying the data in different systems. After that the aggregation is implemented in DataWeave 2 script using Transform component.
-Aggregated results are sorted by source of existence:
+Using the Scatter-Gather component we query the data in different systems. After that the aggregation is implemented in DataWeave 2 script using Transform component.
+
+Aggregated results are sorted as:
 
 1. Accounts only in Salesforce
 2. Accounts only in MS Dynamics
 3. Accounts in both Salesforce and MS Dynamics
 
-and transformed to CSV format. Final report in CSV format is sent to email, that you configured in mule.\*.properties file.
-
+These are transformed to CSV format. The final report in CSV format is sent to the email addresses that you configured in mule.*.properties file.
 
 
 ## endpoints.xml
-This is the file where you will found the endpoint to start the aggregation. This Template has an HTTP Inbound Endpoint as the way to trigger the use case.
+This is the file where you find the endpoint to start the aggregation. This template has an HTTP Listener as the way to trigger the use case.
 
 ### Trigger Flow
 **HTTP Inbound Endpoint** - Start Report Generation
 + `${http.port}` is set as a property to be defined either on a property file or in CloudHub environment variables.
 + The path configured by default is `generatereport` and you are free to change for the one you prefer.
-+ The host name for all endpoints in your CloudHub configuration should be defined as `localhost`. CloudHub will then route requests from your application domain URL to the endpoint.
-
-
++ The host name for all endpoints in your CloudHub configuration should be defined as `localhost`. CloudHub then routes requests from your application domain URL to the endpoint.
 
 ## errorHandling.xml
 This is the right place to handle how your integration reacts depending on the different exceptions. 
 This file provides error handling that is referenced by the main flow in the business logic.
-
-
-
 
