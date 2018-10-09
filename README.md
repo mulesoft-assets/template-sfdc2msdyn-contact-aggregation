@@ -1,7 +1,7 @@
 
 # Anypoint Template: Salesforce and Microsoft Dynamics CRM Contact Aggregation
 
-![](https://exchange2-file-upload-service-kprod.s3.us-east-1.amazonaws.com:443/d731d9a5-62fd-4adf-9eae-cc099580fb7c-image.png)
+![d731d9a5-62fd-4adf-9eae-cc099580fb7c-image.png](https://exchange2-file-upload-service-kprod.s3.us-east-1.amazonaws.com:443/d731d9a5-62fd-4adf-9eae-cc099580fb7c-image.png)
 
 # License Agreement
 This template is subject to the conditions of the 
