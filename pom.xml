@@ -13,6 +13,10 @@
     <version>2.1.1-SNAPSHOT</version>
     <name>template-sfdc2msdyn-contact-aggregation</name>
     
+    <properties>
+        <ms-dynamics.connector.version>3.0.0</ms-dynamics.connector.version>
+    </properties>
+    
     <build>
         <plugins>
             <plugin>
