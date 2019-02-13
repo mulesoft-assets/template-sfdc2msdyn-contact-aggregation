@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:microsoft-dynamics-crm="http://www.mulesoft.org/schema/mule/microsoft-dynamics-crm" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/microsoft-dynamics-crm http://www.mulesoft.org/schema/mule/microsoft-dynamics-crm/current/mule-microsoft-dynamics-crm.xsd">
+	<munit:config name="test-suite.xml"/>
+	<configuration-properties doc:name="Configuration properties" doc:id="73609146-b1e1-4d5a-8425-37ae79549162" file="mule.test.properties" />
+	<munit:before-test name="test-suiteBefore_Test" description="Before tests actions" doc:id="ccd174d4-4160-4cf9-bcc9-b20321932564" >
+		<ee:transform doc:name="Prepare test data of contacts" doc:id="18d5bd94-aa88-4542-8b31-13cad0b4b094">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="testSfdcContact1" ><![CDATA[%dw 2.0
+output application/java
+var generateId = randomInt(100000)
+---
+{
+	FirstName : "FirstName" ++ " " ++ generateId,
+	LastName : "LastName" ++ " " ++ generateId,
+	Email : p('email.sfdc')
+}]]></ee:set-variable>
+				<ee:set-variable variableName="testSfdcContact2" ><![CDATA[%dw 2.0
+output application/java
+var generateId = randomInt(100000)
+---
+{
+	FirstName : "FirstName" ++ " " ++ generateId,
+	LastName : "LastName" ++ " " ++ generateId,
+	Email : p('email.sfdc.msdyn')
+}]]></ee:set-variable>
+				<ee:set-variable variableName="testMSDynContact1" ><![CDATA[%dw 2.0
+output application/java
+var generateId = randomInt(100000)
+---
+{
+	fullname : "MUnitTestName" ++ " " ++ generateId,
+	emailaddress1 : p('email.msdyn')
+}]]></ee:set-variable>
+				<ee:set-variable variableName="testMSDynContact2" ><![CDATA[%dw 2.0
+output application/java
+var generateId = randomInt(100000)
+---
+{
+	fullname : "MUnitTestName" ++ " " ++ generateId,
+	emailaddress1 : p('email.sfdc.msdyn')
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<salesforce:create type="Contact" doc:name="Create test Contacts in Salesforce" doc:id="827fe61c-48f3-41d3-97d6-dcadc31a474a" config-ref="Salesforce_Config">
+			<salesforce:records ><![CDATA[#[[vars.testSfdcContact1, vars.testSfdcContact2]]]]></salesforce:records>
+		</salesforce:create>
+		<set-variable value="#[payload map $.id]" doc:name="Save IDs to variable sfdcIds" doc:id="c62b9445-d242-46f4-b2a9-edef96a28f03" variableName="sfdcIds"/>
+		<microsoft-dynamics-crm:create-multiple logicalName="contact" doc:name="Create test Contacts in MS Dynamics" doc:id="41765dca-c6f6-4574-84f7-4858d842fc06" config-ref="Microsoft_Dynamics_CRM_Dynamics_CRM">
+			<microsoft-dynamics-crm:list-of-attributes ><![CDATA[#[[vars.testMSDynContact1, vars.testMSDynContact2]]]]></microsoft-dynamics-crm:list-of-attributes>
+		</microsoft-dynamics-crm:create-multiple>
+		<set-variable value="#[payload.items map ($.id)]" doc:name="Save IDs to variable msdynIds" doc:id="7b5d03b7-7873-4ddd-9308-b32d83ead7ed" variableName="msdynIds"/>
+		<munit-tools:mock-when doc:name="Mock email processor to avoid sending email" doc:id="efb7092f-f6b4-4f5a-86a4-d0541f9b7d70" processor="email:send" >
+			<munit-tools:then-return />
+		</munit-tools:mock-when>
+	</munit:before-test>
+	<munit:test name="test-suiteTest" description="MUnit Test" doc:id="f9538057-147c-4cca-9767-b7ad86ad476a" >
+		<munit:execution >
+			<flow-ref doc:name="Reference to businessLogicFlow" doc:id="4d83270f-88cf-4392-ab37-8205b97e0bc2" name="businesslogicFlow"/>
+			<ee:transform doc:name="Filtering test records" doc:id="49a5058b-4c38-40e4-be2e-722b2f68e28f">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+payload filter ($.Email == p('email.sfdc') or $.Email == p('email.msdyn') or $.Email == p('email.sfdc.msdyn'))]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert number of records" doc:id="b9dcfaba-f18c-4f1b-9c0a-dca164c97b16" expression="#[sizeOf(payload)]" is="#[MunitTools::equalTo(3)]" message="Assert number of records"/>
+			<munit-tools:assert-that doc:name="Assert that email in the first record is correct" doc:id="e651b10f-2940-484b-9f28-e067c64f9e81" expression="#[payload[0].Email]" is="#[MunitTools::equalTo(p('email.sfdc'))]" message="The first record is incorrect"/>
+			<munit-tools:assert-that doc:name="Assert that first record exists in Salesforce" doc:id="bd17d2fd-8a93-4382-8ee8-826a607185dc" expression="#[payload[0].IDInSfdc]" is="#[MunitTools::not(MunitTools::isEmptyOrNullString())]" message="The first record doesn't exist in Salesforce"/>
+			<munit-tools:assert-that doc:name="Assert that first record does not exist in MSDYN" doc:id="f4f0b104-f695-4d23-85c2-00987d6125c6" expression="#[payload[0].IDInMsdyn]" is="#[MunitTools::isEmptyOrNullString()]" message="The first record exists in MSDYM"/>
+			<munit-tools:assert-that doc:name="Assert that email in the second record is correct" doc:id="06390e08-bf8a-4476-80b2-bfe285daab1f" expression="#[payload[1].Email]" is="#[MunitTools::equalTo(p('email.msdyn'))]" message="The second record is incorrect"/>
+			<munit-tools:assert-that doc:name="Assert that second record does not exist in Salesforce" doc:id="3fe63a01-8bc0-4230-ad61-ee4772969bff" expression="#[payload[1].IDInSfdc]" is="#[MunitTools::isEmptyOrNullString()]" message="The second record exists in Salesforce"/>
+			<munit-tools:assert-that doc:name="Assert that second record exists in MSDYN" doc:id="86e330cd-0a76-40dc-8b87-5ac751ea7d2a" expression="#[payload[1].IDInMsdyn]" is="#[MunitTools::not(MunitTools::isEmptyOrNullString())]" message="The second record doesn't exist in MSDYN"/>
+			<munit-tools:assert-that doc:name="Assert that email in the third record is correct" doc:id="f9384399-77d7-4c96-9e7a-0f9d077eec38" expression="#[payload[2].Email]" is="#[MunitTools::equalTo(p('email.sfdc.msdyn'))]" message="The third record is incorrect"/>
+			<munit-tools:assert-that doc:name="Assert that third record exists in Salesforce" doc:id="28344089-75de-4cd0-a81c-33f5fe58d79a" expression="#[payload[2].IDInSfdc]" is="#[MunitTools::not(MunitTools::isEmptyOrNullString())]" message="The third record doesn't exist in Salesforce"/>
+			<munit-tools:assert-that doc:name="Assert that third record exists in MSDYN" doc:id="dc772f4a-d957-413d-83e2-4bf954f62dfd" expression="#[payload[2].IDInMsdyn]" is="#[MunitTools::not(MunitTools::isEmptyOrNullString())]" message="The third record doesn't exist in MSDYN"/>
+		</munit:validation>
+	</munit:test>
+	<munit:after-test name="test-suiteAfter_Test" description="After tests actions" doc:id="e02341e6-dca9-4eeb-b460-b09d1c8773e4" >
+		<salesforce:delete doc:name="Delete test contacts in Salesforce" doc:id="35e8d66d-7853-4214-bea4-c38fa67508d3" config-ref="Salesforce_Config">
+			<salesforce:delete-ids ><![CDATA[#[vars.sfdcIds]]]></salesforce:delete-ids>
+		</salesforce:delete>
+		<microsoft-dynamics-crm:delete-multiple logicalName="contact" doc:name="Delete test contacts in MSDYN" doc:id="96344bd4-352b-4260-b982-7d1177481d1a" config-ref="Microsoft_Dynamics_CRM_Dynamics_CRM" ids="#[vars.msdynIds]"/>
+	</munit:after-test>
+
+
+</mule>
