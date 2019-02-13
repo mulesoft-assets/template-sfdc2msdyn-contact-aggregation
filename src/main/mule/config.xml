@@ -1,8 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:microsoft-dynamics-crm="http://www.mulesoft.org/schema/mule/microsoft-dynamics-crm" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd http://www.mulesoft.org/schema/mule/microsoft-dynamics-crm http://www.mulesoft.org/schema/mule/microsoft-dynamics-crm/current/mule-microsoft-dynamics-crm.xsd">
+    
+    <global-property doc:name="Global Property" name="mule.env" value="dev" />
+    
+    <configuration-properties file="common.properties" doc:id="8dd387af-efd2-495e-89b9-f060ceaf28d9" doc:name="Configuration properties" />
     <configuration-properties file="mule.${mule.env}.properties" doc:id="46877740-aac5-4812-8728-4718689aa9ec" doc:name="Configuration properties" />
-    <configuration-properties file="common.properties" doc:id="dffa4da7-cc5c-4ecb-922e-1115b4387354" doc:name="Configuration properties" />
-    <configuration-properties file="mule-artifact.properties" doc:id="d185e6c2-8ca4-4217-928b-a845563af693" doc:name="Configuration properties" />
 
     <http:listener-config name="HTTP_Listener_config" doc:id="910654bf-9fd9-4073-bad4-cf951b7f0022" doc:name="HTTP Listener config">
         <http:listener-connection host="0.0.0.0" port="${http.port}" />
@@ -23,4 +25,4 @@
     <microsoft-dynamics-crm:dynamics-crm-config name="Microsoft_Dynamics_CRM_Dynamics_CRM" doc:id="9c382579-296c-4e49-8b97-d1de1def4de5" doc:name="Microsoft Dynamics CRM Dynamics CRM">
         <microsoft-dynamics-crm:online-connection authenticationRetries="${msdyn.retries}" organizationServiceUrl="${msdyn.url}" password="${msdyn.password}" username="${msdyn.user}" />
     </microsoft-dynamics-crm:dynamics-crm-config>
-<global-property doc:name="Global Property" name="mule.env" value="dev" /></mule>
+</mule>
